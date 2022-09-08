@@ -19,6 +19,10 @@ class MyThemeData{
         bodySmall: TextStyle(
             fontSize: 10,
             color: Colors.white,
+        ),
+        titleSmall: TextStyle(
+          fontSize: 13,
+          color: Colors.grey,
         )
     )
 
