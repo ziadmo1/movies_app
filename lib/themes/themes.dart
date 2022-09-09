@@ -11,6 +11,10 @@ class MyThemeData{
       unselectedItemColor: Colors.white
     ),
     textTheme: TextTheme(
+      titleSmall: TextStyle(
+        fontSize: 13,
+        color: Colors.grey,
+      ),
       bodyMedium: TextStyle(
         fontSize: 16,
         color: Colors.white,
@@ -20,10 +24,11 @@ class MyThemeData{
             fontSize: 10,
             color: Colors.white,
         ),
-        titleSmall: TextStyle(
-          fontSize: 13,
-          color: Colors.grey,
-        )
+      bodyLarge: TextStyle(
+        fontSize: 22,
+        color: Colors.white,
+        fontWeight: FontWeight.bold
+      )
     )
 
   );
