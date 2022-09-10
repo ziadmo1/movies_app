@@ -1,63 +1,83 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movies_app/apiManager/api_manager.dart';
+import 'package:movies_app/models/PopularResponse.dart';
+import 'package:movies_app/screens/home_movie_screen/popular_tab/popular_tab.dart';
 import 'package:movies_app/screens/home_movie_screen/topRated_tab/topRated_tab.dart';
 import 'package:movies_app/themes/themes.dart';
 
 class HomeMovieScreen extends StatelessWidget {
+
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
         children: [
-          Stack(
-            alignment: Alignment.bottomLeft,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.network(
-                      'https://images.thedirect.com/media/article_full/avengers-endgame-marvel_MHrI22M.jpg'),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                      padding: EdgeInsets.only(left: 112),
-                      child: Text(
-                        'avengers infinity war'.toUpperCase(),
+          FutureBuilder<PopularResponse>(
+            future: ApiManager.popularMovieData(),
+            builder:(context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.data?.statusMessage ?? ''));
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(color: MyThemeData.lightBlack,),);
+              }
+            var popularMovie = snapshot.data;
+         return Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Image.network(
+                        'https://images.thedirect.com/media/article_full/avengers-endgame-marvel_MHrI22M.jpg'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(left: 112),
+                        child: Text(
+                          popularMovie?.results?[currentIndex].title??'',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                        popularMovie?.results?[currentIndex].releaseDate??'',
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      )),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text('2019  PG-13  2h 7m',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(color: Colors.grey)),
-                ],
-              ),
-              Positioned(
-                left: 10,
-                child: Image.network(
-                  'https://lumiere-a.akamaihd.net/v1/images/p_avengersinfinitywar_19871_cb171514.jpeg?region=0,0,540,810&width=480',
-                  width: 125,
-                  height: 200,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: Colors.grey)),
+                  ],
                 ),
-              ),
-              Positioned(
-                  bottom: 159,
-                  left: -6,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.bookmark_add,
-                        color: Colors.grey,
-                        size: 35,
-                      ))),
-            ],
+                Positioned(
+                  left: 10,
+                  child: Image.network(
+                    'https://lumiere-a.akamaihd.net/v1/images/p_avengersinfinitywar_19871_cb171514.jpeg?region=0,0,540,810&width=480',
+                    width: 125,
+                    height: 200,
+                  ),
+                ),
+                Positioned(
+                    bottom: 159,
+                    left: -6,
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.bookmark_add,
+                          color: Colors.grey,
+                          size: 35,
+                        ))),
+              ],
+            );
+
+    }
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -77,35 +97,7 @@ class HomeMovieScreen extends StatelessWidget {
                     height: 15,
                   ),
                   Expanded(
-                    child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => Stack(children: [
-                              Row(
-                                children: [
-                                  Image.network(
-                                    'https://m.media-amazon.com/images/M/MV5BNjZlOGVhZDctODU2Yi00NzcyLWFlNmItZGQ2ZDc2NTIwNGMyXkEyXkFqcGdeQXVyNzkwMTYyMTI@._V1_.jpg',
-                                    width: 100,
-                                    height: 150,
-                                    fit: BoxFit.fill,
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  )
-                                ],
-                              ),
-                              Positioned(
-                                  right: 85,
-                                  bottom: 108,
-                                  child: IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(
-                                        Icons.bookmark_add,
-                                        color: Colors.grey,
-                                        size: 35,
-                                      )))
-                            ]),
-                        itemCount: 20),
+                    child: PopularTab(currentIndex),
                   ),
                 ],
               ),

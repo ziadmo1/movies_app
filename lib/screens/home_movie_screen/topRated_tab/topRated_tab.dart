@@ -23,7 +23,7 @@ class TopRatedTab extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) => TopRatedWidget(topRated!.results![index]),
-              itemCount: 20
+              itemCount: topRated?.results?.length
           );
         },
 

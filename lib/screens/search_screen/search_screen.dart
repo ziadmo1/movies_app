@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/models/SearchRespnse.dart';
+import 'package:movies_app/screens/search_screen/search_widget.dart';
 import 'package:movies_app/themes/themes.dart';
 
-class SearchDelegateScreen extends SearchDelegate {
+import '../../apiManager/api_manager.dart';
 
+class SearchDelegateScreen extends SearchDelegate {
 
   @override
   // TODO: implement textInputAction
@@ -71,12 +74,27 @@ class SearchDelegateScreen extends SearchDelegate {
         ],
       ));
     }
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.yellow,
-      ),
+    return FutureBuilder<SearchResponse>(
+      future: ApiManager.searchMovie(query),
+      builder: (context, snapshot) {
+        if(snapshot.hasError){
+          return Center(child: Text(snapshot.data?.statusMessage??''));
+        }
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return Center(child: CircularProgressIndicator(color: MyThemeData.lightBlack,),);
+        }
+        var searchData = snapshot.data;
+        return ListView.separated(
+          separatorBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Divider(height: 2,color: Colors.grey,),
+          ),
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (context, index) => SearchWidget(searchData!.results![index]),
+            itemCount: searchData!.results!.length
+        );
+      },
+
     );
   }
 }

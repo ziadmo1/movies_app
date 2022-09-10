@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/screens/home_screen.dart';
+import 'package:movies_app/screens/movie_details_screen/movie_details_screen.dart';
 import 'package:movies_app/themes/themes.dart';
 
 void main() {
@@ -16,7 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
         initialRoute: HomeScreen.routeName,
       routes: {
-          HomeScreen.routeName:(_)=>HomeScreen()
+          HomeScreen.routeName:(_)=>HomeScreen(),
+        MovieDetScreen.routeName:(_)=>MovieDetScreen()
+
       },
       theme: MyThemeData.appTheme,
 
