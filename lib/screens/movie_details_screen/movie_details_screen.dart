@@ -112,7 +112,7 @@ static const String routeName = 'movieDet';
                     height: 15,
                   ),
                   Expanded(
-                      child: MoreLikeTab(results)
+                      child: MoreLikeTab(results.id??0)
                   ),
                 ],
               ),
