@@ -13,9 +13,6 @@ class CategoryData extends StatelessWidget {
     return FutureBuilder<CategoryResponse>(
         future: ApiManager.movieCategory(),
         builder: (context, snapshot) {
-          if(snapshot.hasData){
-            return Center(child: Text('ssssssss'));
-          }
           if (snapshot.hasError) {
             return Center(child: Text(snapshot.data?.statusMessage ?? ''));
           }

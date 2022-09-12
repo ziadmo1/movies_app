@@ -7,13 +7,13 @@ import '../../../apiManager/api_manager.dart';
 import '../../../themes/themes.dart';
 
 class MoreLikeTab extends StatelessWidget {
-  Results results;
-  MoreLikeTab(this.results);
+  num id;
+  MoreLikeTab(this.id);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<LikeMoviesResponse>(
-        future: ApiManager.likeMovies(results.id??0),
+        future: ApiManager.likeMovies(id),
     builder: (context, snapshot) {
       if (snapshot.hasError) {
         return Center(child: Text(snapshot.data?.statusMessage ?? ''));

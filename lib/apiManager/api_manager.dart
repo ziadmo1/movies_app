@@ -7,6 +7,8 @@ import 'package:movies_app/models/PopularResponse.dart';
 import 'package:movies_app/models/SearchRespnse.dart';
 import 'package:movies_app/models/TopRatedResponse.dart';
 
+import '../models/CategoryListResponse.dart';
+
 class ApiManager{
   static const String baseUrl = 'api.themoviedb.org';
   static const String apiKey = 'a6c404179ede61ad21d79677a7366c47';
@@ -67,15 +69,28 @@ class ApiManager{
     throw Exception('error');
   }
 
-  static Future<CategoryResponse> movieCategory()async{
-    var uri = Uri.https(baseUrl, '/genre/movie/list',{
-      'api_key' : apiKey,
+  static Future<CategoryResponse> movieCategory()async {
+    var uri = Uri.https(baseUrl, '/3/genre/movie/list', {
+      'api_key': apiKey,
     });
     var response = await http.get(uri);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       var responseBody = response.body;
       var json = jsonDecode(responseBody);
       return CategoryResponse.fromJson(json);
+    }
+      throw Exception('error');
+  }
+  static Future<CategoryListResponse> categoryList(num catId)async {
+    var uri = Uri.https(baseUrl, '/3/discover/movie', {
+      'api_key': apiKey,
+      'with_genres' : catId.toString(),
+    });
+    var response = await http.get(uri);
+    if (response.statusCode == 200) {
+      var responseBody = response.body;
+      var json = jsonDecode(responseBody);
+      return CategoryListResponse.fromJson(json);
     }
     throw Exception('error');
   }
