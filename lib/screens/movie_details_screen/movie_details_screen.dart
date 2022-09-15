@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/apiManager/api_manager.dart';
 import 'package:movies_app/models/PopularResponse.dart';
 import 'package:movies_app/screens/movie_details_screen/moreLike_tab/moreLike_tab.dart';
+import 'package:readmore/readmore.dart';
 
 import '../../themes/themes.dart';
 
@@ -61,12 +63,24 @@ static const String routeName = 'movieDet';
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(results.overview??'',
-                                maxLines: 7,
-                                overflow: TextOverflow.ellipsis,
+                              ReadMoreText(
                                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                     fontSize: 15
-                                ),),
+                                ),
+                                results.overview??'',
+                                trimLines: 7,
+                                trimMode: TrimMode.Line,
+                                trimCollapsedText: 'Show more',
+                                trimExpandedText: 'Show less',
+                                moreStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontSize: 15,
+                                    color: Colors.yellow
+                                ),
+                                lessStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontSize: 15,
+                                    color: Colors.yellow
+                                ),
+                              ),
                               SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment:
@@ -112,7 +126,7 @@ static const String routeName = 'movieDet';
                     height: 15,
                   ),
                   Expanded(
-                      child: MoreLikeTab(results.id??0)
+                      child: MoreLikeTab(results.id??0,results)
                   ),
                 ],
               ),

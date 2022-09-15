@@ -25,7 +25,7 @@ class CategoryListScreen extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
               child: CircularProgressIndicator(
-                color: MyThemeData.lightBlack,
+                color: Colors.yellow,
               ),
             );
           }

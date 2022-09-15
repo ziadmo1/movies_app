@@ -13,7 +13,7 @@ class MoreLikeWidget extends StatelessWidget {
           Column(
             children: [
               Image.network(
-                      'https://wwwimage-us.pplusstatic.com/thumbnails/photos/w370-q80/movie_asset/77/00/10/lostc_salone_poster_1400x2100.jpg',
+                'https://image.tmdb.org/t/p/w500' + '${results.posterPath}',
                 width: 100,
                 height: 114,
                 fit: BoxFit.fill,
@@ -41,7 +41,7 @@ class MoreLikeWidget extends StatelessWidget {
                         SizedBox(
                           width: 3,
                         ),
-                        Text('${results.voteAverage}',
+                        Text('${results.voteAverage!.toStringAsFixed(1)}',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall),
@@ -59,7 +59,7 @@ class MoreLikeWidget extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
-                    Text('sssssss',
+                    Text(results.releaseDate??'',
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall

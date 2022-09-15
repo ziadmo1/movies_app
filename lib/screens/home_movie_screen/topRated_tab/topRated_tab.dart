@@ -16,7 +16,7 @@ class TopRatedTab extends StatelessWidget {
             return Center(child: Text(snapshot.data?.statusMessage??''));
           }
           if(snapshot.connectionState == ConnectionState.waiting){
-            return Center(child: CircularProgressIndicator(color: MyThemeData.lightBlack,),);
+            return Center(child: CircularProgressIndicator(color: Colors.yellow,),);
           }
           var topRated = snapshot.data;
           return  ListView.builder(
