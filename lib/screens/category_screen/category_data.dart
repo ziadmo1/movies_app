@@ -18,7 +18,7 @@ class CategoryData extends StatelessWidget {
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(color: MyThemeData.lightBlack,),);
+              child: CircularProgressIndicator(color: Colors.yellow,),);
           }
           var category = snapshot.data;
           return GridView.builder(

@@ -81,7 +81,7 @@ class SearchDelegateScreen extends SearchDelegate {
           return Center(child: Text(snapshot.data?.statusMessage??''));
         }
         if(snapshot.connectionState == ConnectionState.waiting){
-          return Center(child: CircularProgressIndicator(color: MyThemeData.lightBlack,),);
+          return Center(child: CircularProgressIndicator(color: Colors.yellow,),);
         }
         var searchData = snapshot.data;
         return ListView.separated(

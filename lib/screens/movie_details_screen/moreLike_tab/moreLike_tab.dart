@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/models/LikeMoviesResponse.dart';
 import 'package:movies_app/models/PopularResponse.dart';
 import 'package:movies_app/screens/movie_details_screen/moreLike_tab/moreLike_widget.dart';
-
 import '../../../apiManager/api_manager.dart';
 import '../../../themes/themes.dart';
 
@@ -26,7 +25,7 @@ class _MoreLikeTabState extends State<MoreLikeTab> {
       }
       if (snapshot.connectionState == ConnectionState.waiting) {
         return Center(
-          child: CircularProgressIndicator(color: MyThemeData.lightBlack,),);
+          child: CircularProgressIndicator(color: Colors.yellow,),);
       }
       var likeMovies = snapshot.data;
       return ListView.builder(

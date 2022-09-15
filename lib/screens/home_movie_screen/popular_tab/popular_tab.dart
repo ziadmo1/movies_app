@@ -25,7 +25,7 @@ class _PopularTabState extends State<PopularTab> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
-              color: MyThemeData.lightBlack,
+              color: Colors.yellow,
             ),
           );
         }

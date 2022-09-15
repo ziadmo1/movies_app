@@ -41,7 +41,7 @@ class MoreLikeWidget extends StatelessWidget {
                         SizedBox(
                           width: 3,
                         ),
-                        Text('${results.voteAverage!}',
+                        Text('${results.voteAverage!.toStringAsFixed(1)}',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall),
