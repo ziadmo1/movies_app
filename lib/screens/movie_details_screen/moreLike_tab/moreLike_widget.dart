@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/models/PopularResponse.dart';
 
-class MoreLikeWidget extends StatelessWidget {
+import '../../../database/my_dataBase.dart';
+import '../../watchlist_screen/watchlist_screen.dart';
+
+class MoreLikeWidget extends StatefulWidget {
 
   Results results;
+  bool pressed = false;
   MoreLikeWidget(this.results);
+
+  @override
+  State<MoreLikeWidget> createState() => _MoreLikeWidgetState();
+}
+
+class _MoreLikeWidgetState extends State<MoreLikeWidget> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -13,7 +23,7 @@ class MoreLikeWidget extends StatelessWidget {
           Column(
             children: [
               Image.network(
-                'https://image.tmdb.org/t/p/w500' + '${results.posterPath}',
+                'https://image.tmdb.org/t/p/w500' + '${widget.results.posterPath}',
                 width: 100,
                 height: 114,
                 fit: BoxFit.fill,
@@ -41,7 +51,7 @@ class MoreLikeWidget extends StatelessWidget {
                         SizedBox(
                           width: 3,
                         ),
-                        Text('${results.voteAverage!.toStringAsFixed(1)}',
+                        Text('${widget.results.voteAverage!.toStringAsFixed(1)}',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodySmall),
@@ -50,7 +60,7 @@ class MoreLikeWidget extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
-                    Text(results.title??'',
+                    Text(widget.results.title??'',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
@@ -59,7 +69,7 @@ class MoreLikeWidget extends StatelessWidget {
                     SizedBox(
                       height: 5,
                     ),
-                    Text(results.releaseDate??'',
+                    Text(widget.results.releaseDate??'',
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall
@@ -76,15 +86,49 @@ class MoreLikeWidget extends StatelessWidget {
         ],
       ),
       Positioned(
-          right: 85,
-          bottom: 139,
-          child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.bookmark_add,
-                color: Colors.grey,
-                size: 35,
-              )))
+        right: 79,
+        bottom: 136,
+        child: IconButton(
+          onPressed: () {
+            setState(() {
+              if (WatchlistScreen.watchlist
+                  .any((element) => element.title == widget.results.title)) {
+                if (WatchlistScreen.watchlist.length == 1) {
+                  MyDB.deletemovie(widget.results);
+                  WatchlistScreen.watchlist = [];
+                } else {
+                  MyDB.deletemovie(widget.results);
+                }
+              } else {
+                MyDB.insertMovie(widget.results);
+              }
+
+              widget.pressed = !widget.pressed;
+              MyDB.getMovies();
+            });
+          },
+          icon: Stack(
+            children: [
+              ImageIcon(
+                AssetImage(widget.pressed
+                    ? "assets/images/preseedbookmark.png"
+                    : "assets/images/bookmark.png"),
+                color: widget.pressed ? Colors.amber : Colors.grey,
+                size: 60,
+              ),
+              Positioned(
+                top: 5,
+                left: 5,
+                child: Icon(
+                  widget.pressed ? Icons.check : Icons.add,
+                  size: 20,
+                  color: Colors.white,
+                ),
+              )
+            ],
+          ),
+        ),
+      )
     ]);
   }
 }
