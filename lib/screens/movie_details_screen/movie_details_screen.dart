@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/apiManager/api_manager.dart';
 import 'package:movies_app/database/my_dataBase.dart';
 import 'package:movies_app/models/PopularResponse.dart';
+import 'package:movies_app/screens/home_screen.dart';
 import 'package:movies_app/screens/movie_details_screen/moreLike_tab/moreLike_tab.dart';
 import 'package:movies_app/screens/watchlist_screen/watchlist_screen.dart';
 import 'package:readmore/readmore.dart';
@@ -34,6 +35,11 @@ class _MovieDetScreenState extends State<MovieDetScreen> {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+          }, icon: Icon(Icons.home))
+        ],
       ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
@@ -197,7 +203,7 @@ class _MovieDetScreenState extends State<MovieDetScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  Expanded(child: MoreLikeTab(results.id ?? 0, results)),
+                  Expanded(child: MoreLikeTab(results.id ?? 0,)),
                 ],
               ),
             ),
