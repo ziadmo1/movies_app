@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/apiManager/api_manager.dart';
+import 'package:movies_app/database/my_dataBase.dart';
 import 'package:movies_app/models/PopularResponse.dart';
 import 'package:movies_app/screens/home_movie_screen/home_movie_widget.dart';
 import 'package:movies_app/screens/home_movie_screen/popular_tab/popular_tab.dart';
@@ -8,44 +9,55 @@ import 'package:movies_app/screens/home_movie_screen/topRated_tab/topRated_tab.d
 import 'package:movies_app/themes/themes.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class HomeMovieScreen extends StatelessWidget {
+class HomeMovieScreen extends StatefulWidget {
+  @override
+  State<HomeMovieScreen> createState() => _HomeMovieScreenState();
+}
+
+class _HomeMovieScreenState extends State<HomeMovieScreen> {
+  @override
+  void initState() {
+    MyDB.getMovies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       child: Column(
         children: [
           FutureBuilder<PopularResponse>(
-            future: ApiManager.popularMovieData(),
-            builder:(context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text(snapshot.data?.statusMessage ?? ''));
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(color: MyThemeData.lightBlack,),);
-              }
-            var popularMovie = snapshot.data;
-         return CarouselSlider(
-             items: popularMovie?.results?.map((result){
-               return HomeMovieWidget(result);
-             }).toList(),
-             options: CarouselOptions(
-               height: 270,
-               viewportFraction:1.0,
-               initialPage: 0,
-               enableInfiniteScroll: true,
-               reverse: true,
-               autoPlay: true,
-               autoPlayInterval: Duration(seconds: 5),
-               autoPlayAnimationDuration: Duration(milliseconds: 800),
-               autoPlayCurve: Curves.fastOutSlowIn,
-               scrollDirection: Axis.vertical,
-             )
-         );
-    }
-          ),
+              future: ApiManager.popularMovieData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                      child: Text(snapshot.data?.statusMessage ?? ''));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: MyThemeData.lightBlack,
+                    ),
+                  );
+                }
+                var popularMovie = snapshot.data;
+                return CarouselSlider(
+                    items: popularMovie?.results?.map((result) {
+                      return HomeMovieWidget(result);
+                    }).toList(),
+                    options: CarouselOptions(
+                      height: 280,
+                      viewportFraction: 1.0,
+                      initialPage: 0,
+                      enableInfiniteScroll: true,
+                      reverse: true,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 5),
+                      autoPlayAnimationDuration: Duration(milliseconds: 800),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      scrollDirection: Axis.vertical,
+                    ));
+              }),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0),
             child: Container(
@@ -87,9 +99,7 @@ class HomeMovieScreen extends StatelessWidget {
                   SizedBox(
                     height: 15,
                   ),
-                  Expanded(
-                    child: TopRatedTab()
-                  ),
+                  Expanded(child: TopRatedTab()),
                 ],
               ),
             ),
