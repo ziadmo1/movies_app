@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/models/LikeMoviesResponse.dart';
 import 'package:movies_app/models/PopularResponse.dart';
 import 'package:movies_app/screens/movie_details_screen/moreLike_tab/moreLike_widget.dart';
+import 'package:movies_app/screens/movie_details_screen/movie_details_screen.dart';
 import '../../../apiManager/api_manager.dart';
 import '../../../themes/themes.dart';
 
 class MoreLikeTab extends StatefulWidget {
   int id;
-  Results results;
-  MoreLikeTab(this.id,this.results);
+  MoreLikeTab(this.id);
 
   @override
   State<MoreLikeTab> createState() => _MoreLikeTabState();
@@ -33,10 +33,7 @@ class _MoreLikeTabState extends State<MoreLikeTab> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) => InkWell(
               onTap: (){
-                widget.results = likeMovies!.results![index];
-                setState(() {
-
-                });
+                  Navigator.pushNamed(context, MovieDetScreen.routeName,arguments: likeMovies?.results?[index]);
               },
               child: MoreLikeWidget(likeMovies!.results![index])),
           itemCount: likeMovies?.results?.length
