@@ -20,8 +20,8 @@ class SearchWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 'https://image.tmdb.org/t/p/w500' + '${results.posterPath}',
-                width: 160,
-                height: 120,
+                width: 120,
+                height: 150,
                 fit: BoxFit.fill,
               ),
             ),
